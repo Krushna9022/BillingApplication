@@ -1,6 +1,7 @@
 package com.bill.repository;
 
 import com.bill.exception.CustomerNotFound;
+import com.bill.model.AdminLogin;
 import com.bill.model.CustomerLogin;
 import com.bill.model.User;
 
@@ -13,27 +14,26 @@ public class ValidateUserRepositoryImp implements ValidateUserRepository {
     @Override
     public User validateUser(User user) {
         try {
+            if (user.getEmail().equals("admin") && user.getPassword().equals("admin")) {
 
-
-            CustomerLogin c = (CustomerLogin) user;
-            List<CustomerLogin> login = uservalid.getAllCustomer();
-            boolean flag = false;
-            for (CustomerLogin u : login) {
-                if (u.getEmail().equals(c.getEmail()) && u.getPassword().equals(c.getPassword()) && c.getRole().equals("customer")) {
-                    flag = true;
-                    break;
+            } else {
+                CustomerLogin c = (CustomerLogin) user;
+                List<CustomerLogin> login = uservalid.getAllCustomer();
+                boolean flag = false;
+                for (CustomerLogin u : login) {
+                    if (u.getEmail().equals(c.getEmail()) && u.getPassword().equals(c.getPassword()) && c.getRole().equals("customer")) {
+                        flag = true;
+                        break;
+                    }
+                }
+                if (!flag) {
+                    throw new CustomerNotFound(user);
                 }
             }
-            if(!flag)
-            {
-                throw new CustomerNotFound(user);
-            }
-
         } catch (CustomerNotFound ex) {
             System.out.println(ex.getMsg());
-              return null;
+            return null;
         }
-
         return user;
     }
 }
