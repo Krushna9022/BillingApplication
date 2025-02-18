@@ -1,15 +1,17 @@
 package com.bill.exception;
 
-import javax.management.JMRuntimeException;
+import com.bill.model.User;
+
+
 
 public class CustomerNotFound extends RuntimeException {
-    private String msg;
-    public CustomerNotFound(String ms)
+    User user;
+    public CustomerNotFound(User user)
     {
-        this.msg=msg;
+        this.user=user;
     }
 
     public String getMsg() {
-        return msg;
+        return "user not found with "+user.getEmail()+"\t"+user.getPassword();
     }
 }

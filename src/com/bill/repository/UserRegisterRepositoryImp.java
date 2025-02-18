@@ -29,16 +29,8 @@ public class UserRegisterRepositoryImp implements UserRegisterRepository{
     }
 
     @Override
-    public boolean validateCustomer(String useremail, String password) {
-       for(CustomerLogin c:custreg)
-        {
-            if(c.getEmail().equals(useremail)&& c.getPassword().equals(password))
-            {
-                return true;
-            }
-
-        }
-        throw new CustomerNotFound("customer not found with "+useremail +" "+password );
+    public List<CustomerLogin> getAllCustomer() {
+        return custreg;
     }
 
 
@@ -46,4 +38,6 @@ public class UserRegisterRepositoryImp implements UserRegisterRepository{
     public boolean registerLogin(AdminLogin login) {
         return false;
     }
+
+
 }

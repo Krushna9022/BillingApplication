@@ -19,10 +19,8 @@ public class UserRegisterServiceImp implements UserRegisterService {
         return false;
     }
 
-    @Override
-    public boolean ValidateCustomer(String useremail, String userpassword) {
-        return registerrepo.validateCustomer(useremail,useremail);
-    }
+
+
 
 
 }

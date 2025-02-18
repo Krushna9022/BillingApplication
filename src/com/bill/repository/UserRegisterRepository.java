@@ -9,8 +9,6 @@ public interface UserRegisterRepository {
     boolean registerLogin(CustomerLogin register);
     boolean registerLogin(AdminLogin register);
     public List show();
+    List<CustomerLogin> getAllCustomer();
 
-
-
-    boolean validateCustomer(String useremail, String useremail1);
 }

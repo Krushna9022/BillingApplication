@@ -10,4 +10,8 @@ public class CustomerLogin extends User  {
 
     public CustomerLogin() {
     }
+    public String getRole()
+    {
+        return role;
+    }
 }

@@ -11,6 +11,4 @@ public interface UserRegisterService {
     boolean registerLogin(AdminLogin login);
 
 
-
-    boolean ValidateCustomer(String useremail, String userpassword);
 }
