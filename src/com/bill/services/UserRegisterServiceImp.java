@@ -9,6 +9,7 @@ import java.util.List;
 
 public class UserRegisterServiceImp implements UserRegisterService {
     public static  UserRegisterRepository registerrepo = new UserRegisterRepositoryImp();
+
     @Override
     public boolean registerLogin(CustomerLogin login) {
         return registerrepo.registerLogin((login));

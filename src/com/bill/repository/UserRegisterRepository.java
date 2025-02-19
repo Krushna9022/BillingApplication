@@ -8,7 +8,6 @@ import java.util.List;
 public interface UserRegisterRepository {
     boolean registerLogin(CustomerLogin register);
     boolean registerLogin(AdminLogin register);
-    public List show();
     List<CustomerLogin> getAllCustomer();
 
 }

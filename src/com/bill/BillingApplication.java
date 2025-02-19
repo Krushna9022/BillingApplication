@@ -1,12 +1,10 @@
 package com.bill;
 
-import com.bill.exception.CustomerNotFound;
 import com.bill.model.*;
 import com.bill.services.*;
 
 import java.util.List;
 import java.util.Scanner;
-import java.util.Vector;
 
 public class BillingApplication {
     static Scanner sc = new Scanner(System.in);
@@ -57,12 +55,12 @@ public class BillingApplication {
                     System.out.println("Enter the email");
                     String email = sc.nextLine();
                     System.out.println("Enter the contact");
-                    String conact = sc.nextLine();
+                    String contact = sc.nextLine();
                     System.out.println("Enter the password ");
                     String password = sc.nextLine();
                     System.out.println("Enter the Address");
                     String address = sc.nextLine();
-                    boolean b = custregisterservice.registerLogin(new CustomerLogin(name, email, conact, password, address));
+                    boolean b = custregisterservice.registerLogin(new CustomerLogin(name, email, contact, password, address));
                     if (b) {
                         System.out.println("Customer has register successfully");
                     } else {
@@ -71,32 +69,24 @@ public class BillingApplication {
                     break;
                 case 2:
                      user = new CustomerLogin();
-                     try {
-                         System.out.println("Welcome to Login DashBorad....");
-                         Thread.sleep(1000);
-                         System.out.println("\n\nPlease Wait...");
-                         Thread.sleep(3000);
-                     }catch(Exception ex)
-                     {
-                         System.out.println(ex.getMessage());
-                     }
+                     System.out.println("Welcome to Login DashBorad....");
+                     System.out.println("\nPlease Wait...");
                      sc.nextLine();
                      System.out.println("enter the email");
-                     String useremail=sc.nextLine();
+                     String useremail =sc.nextLine();
                      System.out.println("Enter the password");
                      String userpass=sc.nextLine();
-                    user =new AdminLogin();
                     user.setEmail(useremail);
                     user.setPassword(userpass);
                     User u = uservalid.validatUser(user);
-
+                    System.out.println(u);
                     if (u !=null)
                     {
                          System.out.println("Login Sucessfully.....");
                          customerMenu(u);
                     }
                     else {
-                        System.out.println("login failed....");
+                        System.out.println(" Cutomer login failed....");
                     }
 
                 break;
@@ -143,14 +133,38 @@ public class BillingApplication {
     private static void customerMenu(User u) {
         boolean cmenu=true;
         do{
-            System.out.println("1.Add product ");
-            System.out.println("2.back to menu");
+            System.out.println("1.show All product prices with available Quantity ");
+            System.out.println("2.Add product to shop ");
+            System.out.println("3.get Bill");
+            System.out.println("4.back to menu");
             int choice =sc.nextInt();
             switch(choice)
             {
                 case 1:
+                    List<Product> listp=productService.getAllproduct();
+                    for(Product plist:listp)
+                    {
+                        System.out.println("ProductId :"+plist.getId()+" productName : "+plist.getName()+"Comapny "+plist.getCompname()+" Price "+plist.getPrice()+" Qunantity "+ plist.getQuantity());
+                    }
+                    System.out.println("=============================================================================");
+                    break;
+                case 2:
+                     listp=productService.getAllproduct();
+                    for(Product plist:listp)
+                    {
+                        System.out.println("ProductId : "+plist.getId()+" productName : "+plist.getName()+"  Comapny : "+plist.getCompname()+" Price: "+plist.getPrice()+" Qunantity: "+ plist.getQuantity());
+                    }
+                    System.out.println("=============================================================================");
+                    System.out.println("Enter the id of Product");
+                    int itemid=sc.nextInt();
+                    System.out.println("Enter the quntity of product");
+                    int qty=sc.nextInt();
 
-
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    cmenu=false;
             }
 
         }while(cmenu);
@@ -199,8 +213,9 @@ public class BillingApplication {
                     {
                         System.out.println("ProductId :"+plist.getId()+" productName : "+plist.getName()+"Comapny "+plist.getCompname()+" Price "+plist.getPrice()+" Qunantity "+ plist.getQuantity());
                     }
-                    System.out.println("=============================================================================");
+                    System.out.println("=================================================================================");
                     break;
+
                 case 8:
                     adminmenu=false;
                 default:
