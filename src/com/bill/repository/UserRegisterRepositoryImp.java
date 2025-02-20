@@ -11,8 +11,8 @@ public class UserRegisterRepositoryImp implements UserRegisterRepository{
     final static   List<CustomerLogin> custreg=new Vector();
     public UserRegisterRepositoryImp()
     {
-        custreg.add(new CustomerLogin("krushna","kkp@","9022068508" ,"krushna","Beed"));
-        custreg.add(new CustomerLogin("mahesh","mahesh@","125568508" ,"mahesh","A.Nagar"));
+       // custreg.add(new CustomerLogin("krushna","kkp@","9022068508" ,"krushna","Beed"));
+       // custreg.add(new CustomerLogin("mahesh","mahesh@","125568508" ,"mahesh","A.Nagar"));
 
     }
 

@@ -6,6 +6,18 @@ public class Product {
     private double price;
     private int quantity;
 
+    public Product() {
+
+    }
+
+    public Product(int id, String name, double price, int quantity, String compname) {
+        this.name = name;
+        this.price = price;
+        this.quantity = quantity;
+        this.compname = compname;
+        this.id = id;
+    }
+
     public int getId() {
         return id;
     }
@@ -20,20 +32,9 @@ public class Product {
         return compname;
     }
 
-    public Product(int id,String name, double price, int quantity, String compname) {
-        this.name = name;
-        this.price = price;
-        this.quantity = quantity;
-        this.compname = compname;
-        this.id=id;
-    }
 
     public void setCompname(String compname) {
         this.compname = compname;
-    }
-
-    public Product() {
-
     }
 
 
@@ -60,7 +61,6 @@ public class Product {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
-
 
 
 }
