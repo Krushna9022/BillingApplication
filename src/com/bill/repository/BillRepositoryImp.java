@@ -8,20 +8,17 @@ import java.util.Vector;
 
 public class BillRepositoryImp implements BillRepository{
     static OrderRepository orderRepository=new OrderRepositoryImp();
-    static List<Order> list;
-    public void  getAllOrder(List<Order> orderlist)
-    {
-         orderlist=orderRepository.getAllOrder();
-        this.list=orderlist;
-    }
+
     @Override
     public Order getBillById(int id) {
-       for(Order o:list)
+        List<Order> list=orderRepository.getAllOrder();
+       for(Order order:list)
        {
-           if(id==o.getId())
+           System.out.println(id+"\t"+order.getId());
+           if(id==order.getId())
            {
-               return o ;
-
+               System.out.println(order.getId()+"\t\t");
+               return order ;
            }
        }
        return  null;
@@ -29,13 +26,13 @@ public class BillRepositoryImp implements BillRepository{
 
     @Override
     public List<Order> getAllBill() {
-        return list;
+        return orderRepository.getAllOrder();
     }
 
     @Override
     public List<Order> getBillCustomer(User user) {
         List<Order> orderlist=new Vector();
-        for(Order o:list)
+        for(Order o:orderlist)
         {
            User u=o.getUser();
            if(u.getName().equals(user.getName().equals(u.getName())&& u.getPassword().equals(user.getPassword())))

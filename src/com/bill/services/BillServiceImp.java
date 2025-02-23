@@ -1,20 +1,22 @@
 package com.bill.services;
 
 import com.bill.model.Order;
+import com.bill.repository.BillRepository;
+import com.bill.repository.BillRepositoryImp;
 
 import java.util.List;
 
 public class BillServiceImp implements BillService{
 
-    BillService billService=new BillServiceImp();
+   static BillRepository billRepository=new BillRepositoryImp();
     @Override
-    public Order getBillById(int i) {
-        return billService.getBillById(i) ;
+    public Order getBillById(int id) {
+        return billRepository.getBillById(id) ;
     }
 
     @Override
     public List<Order> getAllBill() {
-        return List.of();
+        return billRepository.getAllBill();
     }
 
     @Override

@@ -9,6 +9,6 @@ public interface UserRegisterService {
 
     boolean registerLogin(CustomerLogin login);
     boolean registerLogin(AdminLogin login);
-
+    List<CustomerLogin> getAllCustomer();
 
 }

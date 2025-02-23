@@ -19,7 +19,7 @@ public class BillingApplication {
     static ProductService productService = new ProductServiceImp();
     static UserValidatorService uservalid = new UserValidatorServiceImp();
     static OrderService orderService = new OrderServiceImp();
-    static BillService billService=new BillServiceImp();
+    static BillService billService = new BillServiceImp();
 
     public static void main(String[] args) {
         do {
@@ -48,6 +48,8 @@ public class BillingApplication {
 
     public static void customerPanel() {
         System.out.println("Welocme to customer panel");
+        custregisterservice.registerLogin(new CustomerLogin("krushna", "Krushna@gmail.com", "9022068508", "******", "beed"));
+        custregisterservice.registerLogin(new CustomerLogin("pravin", "pravin@gmail.com", "5656068508", "######", "shillod"));
         boolean back = true;
         do {
             System.out.println("1.Register the Customer");
@@ -163,6 +165,7 @@ public class BillingApplication {
                                 product.setQuantity(newStock);
                                 Product product1 = new Product();
                                 product1.setId(pid);
+                                product1.setName(product.getName());
                                 product1.setQuantity(quantity);
                                 product1.setCompname(product.getCompname());
                                 product1.setPrice(product.getPrice());
@@ -184,18 +187,33 @@ public class BillingApplication {
                     } while (flag);
                     Order order1 = null;
                     if (custProdList != null) {
-                        order1=new Order(orderid,u,custProdList,new Date());
-                        boolean placeorder=orderService.placedOrder(order1);
-                        if(placeorder)
-                        {
+                        Date date = new Date();
+                        order1 = new Order(orderid, u, custProdList, date);
+                        orderid++;
+                        boolean placeorder = orderService.placedOrder(order1);
+                        if (placeorder) {
                             System.out.println("Your order has been placed👍👍");
                         }
                     } else {
                         System.out.println("nothing has been ordered..😞😞");
                     }
+                    break;
                 case 2:
-                    Order order=billService.getBillById((orderid-1));
-
+                    int oid = orderid - 1;
+                    Order order = billService.getBillById((oid));
+                    if (order != null) {
+                        System.out.println("Order id " + order.getId());
+                        System.out.println("👤 " + order.getUser().getName() + "\t\t\t" + order.getDate());
+                        List<Product> prodlist = order.getProductList();
+                        double totalbill = 0;
+                        for (Product p1 : prodlist) {
+                            System.out.println(p1.getName() + "\t" + p1.getCompname() + "\t" + p1.getPrice() + "\t" + p1.getQuantity() + "\t" + (p1.getPrice() * p1.getQuantity()));
+                            totalbill = totalbill + (p1.getPrice() * p1.getQuantity());
+                        }
+                        System.out.println("\t\t\t total bill " + totalbill + " /-");
+                    } else {
+                        System.out.println("You havent any Purchases yet...😞😞");
+                    }
                     break;
                 case 3:
                     cmenu = false;
@@ -204,12 +222,12 @@ public class BillingApplication {
         } while (cmenu);
     }
 
-    private static void adminMenu() {
+    public static void adminMenu() {
         boolean adminmenu = true;
-        /*Product p1 = new Product(1, "fan", 200, 20, "Bajaj");
+        Product p1 = new Product(1, "fan", 200, 20, "Bajaj");
         Product p2 = new Product(2, "cooker", 100, 10, "presti");
         productService.addProduct(p1);
-        productService.addProduct(p2);*/
+        productService.addProduct(p2);
         do {
             System.out.println("1.Add Product");
             System.out.println("2.View All product");
@@ -217,7 +235,7 @@ public class BillingApplication {
             System.out.println("4.serach product by id");
             System.out.println("5.View All Bills");
             System.out.println("6.View Total Orders");
-            System.out.println("8.back");
+            System.out.println("8.back to main menu ");
             System.out.println("Enter your choice");
             int choice = sc.nextInt();
             switch (choice) {
@@ -244,12 +262,62 @@ public class BillingApplication {
                     break;
                 case 2:
                     List<Product> listp = productService.getAllproduct();
-                    for (Product plist : listp) {
-                        System.out.println("ProductId :" + plist.getId() + " productName : " + plist.getName() + "Comapny " + plist.getCompname() + " Price " + plist.getPrice() + " Qunantity " + plist.getQuantity());
+                    if (listp != null) {
+                        for (Product plist : listp) {
+                            System.out.println("ProductId :" + plist.getId() + " productName : " + plist.getName() + "Comapny " + plist.getCompname() + " Price " + plist.getPrice() + " Qunantity " + plist.getQuantity());
+                        }
+                        System.out.println("=================================================================================");
+                    } else {
+                        System.out.println("product not found ❌❌...");
                     }
-                    System.out.println("=================================================================================");
+                    break;
+                case 3:
+                    List<CustomerLogin> customerLogins = custregisterservice.getAllCustomer();
+                    for (CustomerLogin customerLogin : customerLogins) {
+                        System.out.println(customerLogin.getName() + "\t" + customerLogin.getContact() + "\t" + customerLogin.getEmail());
+                    }
+                    break;
+                case 4:
+                    listp = productService.getAllproduct();
+                    System.out.println("Enter the product Id to search product detail");
+                    int spid = sc.nextInt();
+                    boolean flag=false;
+                    for (Product product:listp) {
+                        if(spid==product.getId())
+                        {
+                            System.out.println(product.getId()+"\t"+product.getName()+"\t"+product.getCompname()+"\t"+product.getPrice()+"\t"+product.getQuantity());
+                            flag=true;
+                        }
+                    }
+                    if(!flag)
+                    {
+                        System.out.println("Not found ❌❌❌");
+                    }
                     break;
 
+                case 5:
+                    List<Order> orders=billService.getAllBill();
+                    if(orders!=null)
+                    {
+                        for(Order order:orders)
+                        {
+                            System.out.println("Bill No " +order.getId()+ " \tUser "+order.getUser().getName()+"\t Date: "+order.getDate());
+                            System.out.println("===========================================================");
+                            List<Product> productList=order.getProductList();
+                            double totalbill=0;
+                            for (Product product : productList) {
+                                System.out.println(product.getName() + "\t" + product.getCompname() + "\t" + product.getPrice() + "\t" + product.getQuantity() + "\t" + (product.getPrice() * product.getQuantity()));
+                                totalbill = totalbill + (product.getPrice() * product.getQuantity());
+                            }
+                            System.out.println("======================================");
+                            System.out.println("\t\t\t total bill " + totalbill + " /-");
+                        }
+                        System.out.println("\n============================================");
+                    }
+                    else {
+                        System.out.println("not found ...");
+                    }
+                    break;
                 case 8:
                     adminmenu = false;
                 default:

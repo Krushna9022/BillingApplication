@@ -16,11 +16,20 @@ public class ProductRepositoryImp implements ProductRepository{
     }
     @Override
     public List<Product> getAllProduct() {
+
         return productlist;
     }
 
     @Override
     public boolean addProduct(Product p) {
-        return productlist.add(p);
+        boolean flag=true;
+        for(Product p1:productlist)
+        {
+            if(p1.getId()==p.getId())
+            {
+                flag=false;
+            }
+        }
+        return flag?productlist.add(p):flag;
     }
 }

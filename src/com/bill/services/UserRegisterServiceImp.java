@@ -8,11 +8,11 @@ import com.bill.repository.UserRegisterRepositoryImp;
 import java.util.List;
 
 public class UserRegisterServiceImp implements UserRegisterService {
-    public static  UserRegisterRepository registerrepo = new UserRegisterRepositoryImp();
+    public static  UserRegisterRepository userRegisterRepository = new UserRegisterRepositoryImp();
 
     @Override
     public boolean registerLogin(CustomerLogin login) {
-        return registerrepo.registerLogin((login));
+        return userRegisterRepository.registerLogin((login));
     }
 
     @Override
@@ -20,8 +20,10 @@ public class UserRegisterServiceImp implements UserRegisterService {
         return false;
     }
 
-
-
+    @Override
+    public List<CustomerLogin> getAllCustomer() {
+        return userRegisterRepository.getAllCustomer();
+    }
 
 
 }

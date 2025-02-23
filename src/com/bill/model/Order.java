@@ -8,7 +8,7 @@ public class Order {
     int id;
     User user;
     List<Product> list;
-    Date order;
+    Date date;
     Double grandTotal;
 
     public Order() {
@@ -23,20 +23,14 @@ public class Order {
         this.user = user;
     }
 
-    public Order(int id, User user, List<Product> list, Date order) {
+    public Order(int id, User user, List<Product> list, Date date) {
         this.id = id;
         this.list = list;
-        this.order = order;
+        this.date = date;
         this.user = user;
 
     }
 
-    public Order(int id, User user, List<Product> list, Date order, Double grandTotal) {
-        this.id = id;
-        this.list = list;
-        this.user = user;
-        this.grandTotal = grandTotal;
-    }
 
     public int getId() {
         return id;
@@ -46,20 +40,20 @@ public class Order {
         this.id = id;
     }
 
-    public List<Product> getList() {
+    public List<Product> getProductList() {
         return list;
     }
 
-    public void setList(List<Product> list) {
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public void setProductList(List<Product> list) {
         this.list = list;
-    }
-
-    public Date getOrder() {
-        return order;
-    }
-
-    public void setOrder(Date order) {
-        this.order = order;
     }
 
     public Double getGrandTotal() {
