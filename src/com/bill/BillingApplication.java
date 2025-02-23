@@ -19,6 +19,7 @@ public class BillingApplication {
     static ProductService productService = new ProductServiceImp();
     static UserValidatorService uservalid = new UserValidatorServiceImp();
     static OrderService orderService = new OrderServiceImp();
+    static BillService billService=new BillServiceImp();
 
     public static void main(String[] args) {
         do {
@@ -136,9 +137,9 @@ public class BillingApplication {
         boolean cmenu = true;
         do {
             System.out.println("1.Place your order ");
-            System.out.println("2.Add product to Order ");
-            System.out.println("3.get Bill");
-            System.out.println("4.back to menu");
+            System.out.println("2.get Bill ");
+
+            System.out.println("3.back to menu");
             int choice = sc.nextInt();
             switch (choice) {
                 case 1:
@@ -181,21 +182,22 @@ public class BillingApplication {
                             flag = false;
                         }
                     } while (flag);
-
+                    Order order1 = null;
+                    if (custProdList != null) {
+                        order1=new Order(orderid,u,custProdList,new Date());
+                        boolean placeorder=orderService.placedOrder(order1);
+                        if(placeorder)
+                        {
+                            System.out.println("Your order has been placed👍👍");
+                        }
+                    } else {
+                        System.out.println("nothing has been ordered..😞😞");
+                    }
                 case 2:
+                    Order order=billService.getBillById((orderid-1));
 
-
-
-                  /* Order order1=new Order(orderid++,u,userProdList,new Date());
-                   if(order1!=null)
-                   {
-                       System.out.println("You order has been placed");
-                   }*/
                     break;
                 case 3:
-
-                    break;
-                case 4:
                     cmenu = false;
             }
 

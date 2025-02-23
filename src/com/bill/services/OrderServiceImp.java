@@ -17,4 +17,9 @@ public class OrderServiceImp implements OrderService {
     public boolean isStockAvailable(int pid,int quantity) {
         return orderRepository.isStockAvailable(pid,quantity);
     }
+
+    @Override
+    public boolean placedOrder(Order order) {
+        return orderRepository.placedOrder(order);
+    }
 }
