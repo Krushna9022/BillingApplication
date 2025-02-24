@@ -17,7 +17,7 @@ public class ProductRepositoryImp implements ProductRepository{
     @Override
     public List<Product> getAllProduct() {
 
-        return productlist;
+        return productlist!=null?productlist:null;
     }
 
     @Override

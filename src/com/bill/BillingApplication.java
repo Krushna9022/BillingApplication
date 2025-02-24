@@ -100,7 +100,7 @@ public class BillingApplication {
                     break;
                 case 3:
                     back = false;
-                    System.out.println("========================================");
+                    System.out.println("____________________________________________");
 
             }
         } while (back);
@@ -140,62 +140,67 @@ public class BillingApplication {
         do {
             System.out.println("1.Place your order ");
             System.out.println("2.get Bill ");
-
-            System.out.println("3.back to menu");
+            System.out.println("3.get All bill ");
+            System.out.println("4.back to menu");
             int choice = sc.nextInt();
             switch (choice) {
                 case 1:
                     List<Product> listp = productService.getAllproduct();
-                    for (Product plist : listp) {
-                        System.out.println("ProductId : " + plist.getId() + " productName : " + plist.getName() + "  Comapny : " + plist.getCompname() + " Price: " + plist.getPrice() + " Qunantity: " + plist.getQuantity());
-                    }
-                    System.out.println("=============================================================================");
-                    boolean flag = true;
-                    List<Product> custProdList = new Vector();
-                    do {
-                        System.out.println("Enter the id of Product");
-                        int pid = sc.nextInt();
-                        Product product = orderService.productAvaliable(pid);
-                        if (product != null) {
-                            System.out.println("Enter the quntity of product");
-                            int quantity = sc.nextInt();
-                            boolean b = orderService.isStockAvailable(pid, quantity);
-                            if (b) {
-                                int newStock = product.getQuantity() - quantity;
-                                product.setQuantity(newStock);
-                                Product product1 = new Product();
-                                product1.setId(pid);
-                                product1.setName(product.getName());
-                                product1.setQuantity(quantity);
-                                product1.setCompname(product.getCompname());
-                                product1.setPrice(product.getPrice());
-                                custProdList.add(product1);
-                                System.out.println("Added to cart 👍");
+                    System.out.println(listp);
+                    if (listp != null) {
+                        for (Product plist : listp) {
+                            System.out.println("ProductId : " + plist.getId() + " productName : " + plist.getName() + "  Comapny : " + plist.getCompname() + " Price: " + plist.getPrice() + " Qunantity: " + plist.getQuantity());
+                        }
+                        System.out.println("=============================================================================");
+                        boolean flag = true;
+                        List<Product> custProdList = new Vector();
+                        do {
+                            System.out.println("Enter the id of Product");
+                            int pid = sc.nextInt();
+                            Product product = orderService.productAvaliable(pid);
+                            if (product != null) {
+                                System.out.println("Enter the quntity of product");
+                                int quantity = sc.nextInt();
+                                boolean b = orderService.isStockAvailable(pid, quantity);
+                                if (b) {
+                                    int newStock = product.getQuantity() - quantity;
+                                    product.setQuantity(newStock);
+                                    Product product1 = new Product();
+                                    product1.setId(pid);
+                                    product1.setName(product.getName());
+                                    product1.setQuantity(quantity);
+                                    product1.setCompname(product.getCompname());
+                                    product1.setPrice(product.getPrice());
+                                    custProdList.add(product1);
+                                    System.out.println("Added to cart 👍");
+                                } else {
+                                    System.out.println("Available Qunatity is " + product.getQuantity() + " only cant added to cart🙁 ");
+                                }
                             } else {
-                                System.out.println("Available Qunatity is " + product.getQuantity() + " only cant added to cart🙁 ");
+                                System.out.println("Product not found with given id... 😒");
+                            }
+
+                            System.out.println("Do you want add more product :y/n");
+                            sc.nextLine();
+                            char s = sc.next().charAt(0);
+                            if (!(s == 'y' || s == 'Y')) {
+                                flag = false;
+                            }
+                        } while (flag);
+                        Order order1 = null;
+                        if (custProdList != null) {
+                            Date date = new Date();
+                            order1 = new Order(orderid, u, custProdList, date);
+                            orderid++;
+                            boolean placeorder = orderService.placedOrder(order1);
+                            if (placeorder) {
+                                System.out.println("Your order has been placed👍👍");
                             }
                         } else {
-                            System.out.println("Product not found with given id... 😒");
-                        }
-
-                        System.out.println("Do you want add more product :y/n");
-                        sc.nextLine();
-                        char s = sc.next().charAt(0);
-                        if (!(s == 'y' || s == 'Y')) {
-                            flag = false;
-                        }
-                    } while (flag);
-                    Order order1 = null;
-                    if (custProdList != null) {
-                        Date date = new Date();
-                        order1 = new Order(orderid, u, custProdList, date);
-                        orderid++;
-                        boolean placeorder = orderService.placedOrder(order1);
-                        if (placeorder) {
-                            System.out.println("Your order has been placed👍👍");
+                            System.out.println("nothing has been ordered..😞😞");
                         }
                     } else {
-                        System.out.println("nothing has been ordered..😞😞");
+                        System.out.println("product are not available....");
                     }
                     break;
                 case 2:
@@ -216,6 +221,26 @@ public class BillingApplication {
                     }
                     break;
                 case 3:
+                    List<Order> orders = billService.getAllBill();
+                    if (orders != null) {
+                        for (Order ord : orders) {
+                            System.out.println("===========================================================");
+                            System.out.println("Bill No " + ord.getId() + " \tUser " + ord.getUser().getName() + "\t Date: " + ord.getDate());
+                            System.out.println("===========================================================");
+                            List<Product> productList = ord.getProductList();
+                            double totalbill = 0;
+                            for (Product product : productList) {
+                                System.out.println(product.getName() + "\t" + product.getCompname() + "\t" + product.getPrice() + "\t" + product.getQuantity() + "\t" + (product.getPrice() * product.getQuantity()));
+                                totalbill = totalbill + (product.getPrice() * product.getQuantity());
+                            }
+                            System.out.println("===========================================");
+                            System.out.println("\t\t\t total bill " + totalbill + " /-");
+                        }
+                        System.out.print("=============================================================\n\n");
+                    } else {
+                        System.out.println("not found ...");
+                    }
+                case 4:
                     cmenu = false;
             }
 
@@ -240,7 +265,6 @@ public class BillingApplication {
             int choice = sc.nextInt();
             switch (choice) {
                 case 1:
-
                     System.out.println("Enter the product Id");
                     int id = sc.nextInt();
                     sc.nextLine();
@@ -281,30 +305,26 @@ public class BillingApplication {
                     listp = productService.getAllproduct();
                     System.out.println("Enter the product Id to search product detail");
                     int spid = sc.nextInt();
-                    boolean flag=false;
-                    for (Product product:listp) {
-                        if(spid==product.getId())
-                        {
-                            System.out.println(product.getId()+"\t"+product.getName()+"\t"+product.getCompname()+"\t"+product.getPrice()+"\t"+product.getQuantity());
-                            flag=true;
+                    boolean flag = false;
+                    for (Product product : listp) {
+                        if (spid == product.getId()) {
+                            System.out.println(product.getId() + "\t" + product.getName() + "\t" + product.getCompname() + "\t" + product.getPrice() + "\t" + product.getQuantity());
+                            flag = true;
                         }
                     }
-                    if(!flag)
-                    {
+                    if (!flag) {
                         System.out.println("Not found ❌❌❌");
                     }
                     break;
 
                 case 5:
-                    List<Order> orders=billService.getAllBill();
-                    if(orders!=null)
-                    {
-                        for(Order order:orders)
-                        {
-                            System.out.println("Bill No " +order.getId()+ " \tUser "+order.getUser().getName()+"\t Date: "+order.getDate());
+                    List<Order> orders = billService.getAllBill();
+                    if (orders != null) {
+                        for (Order order : orders) {
+                            System.out.println("Bill No " + order.getId() + " \tUser " + order.getUser().getName() + "\t Date: " + order.getDate());
                             System.out.println("===========================================================");
-                            List<Product> productList=order.getProductList();
-                            double totalbill=0;
+                            List<Product> productList = order.getProductList();
+                            double totalbill = 0;
                             for (Product product : productList) {
                                 System.out.println(product.getName() + "\t" + product.getCompname() + "\t" + product.getPrice() + "\t" + product.getQuantity() + "\t" + (product.getPrice() * product.getQuantity()));
                                 totalbill = totalbill + (product.getPrice() * product.getQuantity());
@@ -313,11 +333,11 @@ public class BillingApplication {
                             System.out.println("\t\t\t total bill " + totalbill + " /-");
                         }
                         System.out.println("\n============================================");
-                    }
-                    else {
+                    } else {
                         System.out.println("not found ...");
                     }
                     break;
+
                 case 8:
                     adminmenu = false;
                 default:

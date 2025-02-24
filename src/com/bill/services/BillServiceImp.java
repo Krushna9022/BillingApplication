@@ -1,6 +1,7 @@
 package com.bill.services;
 
 import com.bill.model.Order;
+import com.bill.model.User;
 import com.bill.repository.BillRepository;
 import com.bill.repository.BillRepositoryImp;
 
@@ -20,7 +21,7 @@ public class BillServiceImp implements BillService{
     }
 
     @Override
-    public List<Order> getBillCustomer() {
-        return List.of();
+    public List<Order> getBillCustomer(User user) {
+        return billRepository.getBillCustomer(user);
     }
 }
